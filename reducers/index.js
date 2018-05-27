@@ -17,4 +17,4 @@ function entries(state = {}, action) {
     }
 }
 
-export default antries
+export default entries
