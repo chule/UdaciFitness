@@ -6,12 +6,13 @@ import UdaciSteppers from './UdaciSteppers'
 import DateHeader from './DateHeader'
 import { Ionicons } from '@expo/vector-icons'
 import TextButton from './TextButton'
+import { submitEntry, removeEntry } from '../utils/api'
 
-function SubmitBtn ({ onPress }) {
+function SubmitBtn({ onPress }) {
   return (
     <TouchableOpacity
       onPress={onPress}>
-        <Text>SUBMIT</Text>
+      <Text>SUBMIT</Text>
     </TouchableOpacity>
   )
 }
@@ -62,6 +63,7 @@ export default class AddEntry extends Component {
     // Navigate to home
 
     // Save to "DB"
+    submitEntry({ entry, key })
 
     // Clear local notification
   }
@@ -73,6 +75,7 @@ export default class AddEntry extends Component {
     // Route to Home
 
     // Update "DB"
+    removeEntry(key)
   }
   render() {
     const metaInfo = getMetricMetaInfo()
@@ -94,7 +97,7 @@ export default class AddEntry extends Component {
 
     return (
       <View>
-        <DateHeader date={(new Date()).toLocaleDateString()}/>
+        <DateHeader date={(new Date()).toLocaleDateString()} />
         {Object.keys(metaInfo).map((key) => {
           const { getIcon, type, ...rest } = metaInfo[key]
           const value = this.state[key]
@@ -104,16 +107,16 @@ export default class AddEntry extends Component {
               {getIcon()}
               {type === 'slider'
                 ? <UdaciSlider
-                    value={value}
-                    onChange={(value) => this.slide(key, value)}
-                    {...rest}
-                  />
+                  value={value}
+                  onChange={(value) => this.slide(key, value)}
+                  {...rest}
+                />
                 : <UdaciSteppers
-                    value={value}
-                    onIncrement={() => this.increment(key)}
-                    onDecrement={() => this.decrement(key)}
-                    {...rest}
-                  />}
+                  value={value}
+                  onIncrement={() => this.increment(key)}
+                  onDecrement={() => this.decrement(key)}
+                  {...rest}
+                />}
             </View>
           )
         })}
