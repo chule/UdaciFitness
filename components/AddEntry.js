@@ -10,6 +10,7 @@ import { submitEntry, removeEntry } from '../utils/api'
 import { connect } from 'react-redux'
 import { addEntry } from '../actions'
 import { white, purple } from '../utils/colors'
+import { NavigationActions } from 'react-navigation'
 
 const styles = StyleSheet.create({
   container: {
@@ -112,7 +113,7 @@ class AddEntry extends Component {
     }))
 
     this.setState(() => ({ run: 0, bike: 0, swim: 0, sleep: 0, eat: 0 }))
-
+    this.toHome()
     // Navigate to home
 
     // Save to "DB"
@@ -128,10 +129,18 @@ class AddEntry extends Component {
       [key]: getDailyReminderValue()
     }))
     // Route to Home
+    this.toHome()
 
     // Update "DB"
     removeEntry(key)
   }
+
+  toHome = () => {
+    this.props.navigation.dispatch(NavigationActions.back({
+      key: 'AddEntry'
+    }))
+  } 
+
   render() {
     const metaInfo = getMetricMetaInfo()
 
