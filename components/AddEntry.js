@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
 import { View, TouchableOpacity, Text, Platform, StyleSheet } from 'react-native'
-import { getMetricMetaInfo, timeToString, getDailyReminderValue } from '../utils/helpers'
+import {
+  getMetricMetaInfo,
+  timeToString,
+  getDailyReminderValue,
+  clearLocalNotification,
+  setLocalNotification
+} from '../utils/helpers'
 import UdaciSlider from './UdaciSlider'
 import UdaciSteppers from './UdaciSteppers'
 import DateHeader from './DateHeader'
@@ -58,7 +64,7 @@ const styles = StyleSheet.create({
 function SubmitBtn({ onPress }) {
   return (
     <TouchableOpacity
-      style={ Platform.OS === 'ios'
+      style={Platform.OS === 'ios'
         ? styles.iosSubmitBtn
         : styles.androidSubmitBtn
       }
@@ -119,7 +125,8 @@ class AddEntry extends Component {
     // Save to "DB"
     submitEntry({ entry, key })
 
-    // Clear local notification
+    clearLocalNotification()
+      .then(setLocalNotification)
   }
   reset = () => {
     const key = timeToString()
@@ -139,7 +146,7 @@ class AddEntry extends Component {
     this.props.navigation.dispatch(NavigationActions.back({
       key: 'AddEntry'
     }))
-  } 
+  }
 
   render() {
     const metaInfo = getMetricMetaInfo()
@@ -152,7 +159,7 @@ class AddEntry extends Component {
             size={100}
           />
           <Text>You already logged your information for today.</Text>
-          <TextButton style={{padding: 10}} onPress={this.reset}>
+          <TextButton style={{ padding: 10 }} onPress={this.reset}>
             Reset
           </TextButton>
         </View>
